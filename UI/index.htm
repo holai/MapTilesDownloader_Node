@@ -15,14 +15,15 @@
 	<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js'></script>
 	<script src='mapbox-gl-draw-rectangle-mode.min.js'></script>
 	<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.css' type='text/css'/>
+	<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.0/mapbox-gl-language.js'></script>
 
 	<!-- <script src='https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js'></script> -->
-	<script src="https://cdn.bootcdn.net/ajax/libs/progressbar.js/1.1.0/progressbar.js"></script>
+	<script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/progressbar.js/1.1.0/progressbar.min.js"></script>
 
 	<script src="async.min.js"></script>
 	<script src="turf.min.js"></script>
 
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i" rel="stylesheet"> 
+	<!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i" rel="stylesheet">  -->
 	<script src="materialize/js/materialize.min.js"></script>
 	<link href='materialize/css/materialize.min.css' rel='stylesheet' type='text/css' />
 
@@ -46,13 +47,13 @@
 			1
 		</div>
 		<div class="step-title">
-			Search an Area
+			搜索地点
 		</div>
 
 		<form id='search-form' class='sidebar-section row'>
 			<div class="input-field col s12">
 				<input id="location-box" type="text" value="New York" />
-				<label for="location-box">Enter a location</label>
+				<label for="location-box">输入一个位置</label>
 			</div>
 		</form>
 
@@ -61,12 +62,12 @@
 			2
 		</div>
 		<div class="step-title">
-			Select a Region
+			选择一个范围
 		</div>
 
 		<div class='center-align sidebar-section'>
 			<p>
-				<a class="waves-effect waves-light z-depth-0 btn-small orange darken-3" id='rectangle-draw-button'>Draw a rectangle</a>
+				<a class="waves-effect waves-light z-depth-0 btn-small orange darken-3" id='rectangle-draw-button'>画一个矩形</a>
 			</p>
 		</div>
 
@@ -74,18 +75,18 @@
 			3
 		</div>
 		<div class="step-title">
-			Configure
+			配置
 		</div>
 
 		<div class='sidebar-section'>
 			<div class="row">
 				<div class="input-field col s6">
 					<input id="zoom-from-box" type="text" value='15'/>
-					<label for="zoom-from-box" class="active">Zoom from:</label>
+					<label for="zoom-from-box" class="active">开始Zoom:</label>
 				</div>
 				<div class="input-field col s6">
 					<input id="zoom-to-box" type="text" value='15'/>
-					<label for="zoom-to-box" class="active">Zoom to:</label>
+					<label for="zoom-to-box" class="active">结束Zoom:</label>
 				</div>
 			</div>
 
@@ -93,7 +94,7 @@
 			<div class="row">
 				<div class="input-field col s10">
 					<input id="source-box" type="text" value='http://ecn.t0.tiles.virtualearth.net/tiles/a{quad}.jpeg?g=129&mkt=en&stl=H'>
-					<label for="source-box">Map Tile Source</label>
+					<label for="source-box">地图瓦片资源</label>
 				</div>
 				<div class="input-field col s2">
 					<a class='waves-effect waves-light btn-small blue-grey lighten-2 z-depth-0 dropdown-trigger' id='source-select' href='#' data-target='sources'>⯆</a>
@@ -104,7 +105,7 @@
 			</div>
 
 			<div class='center-align'>
-				<a class="waves-effect waves-light z-depth-0 btn-small orange darken-3" id='grid-preview-button'>Preview Grid</a>
+				<a class="waves-effect waves-light z-depth-0 btn-small orange darken-3" id='grid-preview-button'>预览网格</a>
 			</div>
 
 		</div>
@@ -113,45 +114,45 @@
 			4
 		</div>
 		<div class="step-title">
-			<a href='javascript:void(0)' id='more-options-toggle'>More Options (+)</a>
+			<a href='javascript:void(0)' id='more-options-toggle'>更多配置 (+)</a>
 		</div>
 
 		<div style='display:none;' id='more-options' class='sidebar-section row'>
 
-			<div class="input-field col s12">
+			<!-- <div class="input-field col s12">
 				<select id="output-scale" type="text">
 					<option value="1">1x</option>
 					<option value="2">2x</option>
 				</select>
 				<label for="output-scale">Output scale</label>
-			</div>
+			</div> -->
 
-			<div class="input-field col s12">
+			<!-- <div class="input-field col s12">
 				<input id="output-directory-box" type="text" value="{timestamp}">
 				<label for="output-directory-box">Output directory</label>
-			</div>
+			</div> -->
 
-			<div class="input-field col s12">
+			<!-- <div class="input-field col s12">
 				<select id="output-type" type="text">
 					<option value="directory">Directory</option>
 					<option value="mbtiles">Mbtiles</option>
 					<option value="repo">Repo</option>
 				</select>
 				<label for="output-type">Output type</label>
-			</div>
+			</div> -->
 
 			<div class="input-field col s12">
 				<input id="output-file-box" type="text" value="{z}/{x}/{y}.png">
-				<label for="output-file-box">Output file</label>
+				<label for="output-file-box">输出文件路径</label>
 			</div>
 
 			<div class="input-field col s12">
 				<input id="parallel-threads-box" type="text" value="4">
-				<label for="parallel-threads-box">Parallel downloads</label>
+				<label for="parallel-threads-box">下载线程数</label>
 			</div>
 		</div>
 
-		<button class='waves-effect waves-light z-depth-0 btn-large cyan darken-2 bottom-button' id='download-button'>Download</button>
+		<button class='waves-effect waves-light z-depth-0 btn-large cyan darken-2 bottom-button' id='download-button'>下载</button>
 
 	</div>
 
@@ -161,10 +162,10 @@
 			5
 		</div>
 		<div class="step-title">
-			Downloading tiles
+			下载瓦片中
 		</div>
 		<div class="hints sidebar-section">
-			Please wait...
+			请等待...
 		</div>
 
 		<div class="sidebar-section">
@@ -183,7 +184,7 @@
 	
 		<textarea id='log-view' class="sidebar-section"></textarea>
 
-		<button class='waves-effect waves-light z-depth-0 btn-large red lighten-5 bottom-button' id='stop-button'>Stop</button>
+		<button class='waves-effect waves-light z-depth-0 btn-large red lighten-5 bottom-button' id='stop-button'>停止</button>
 
 	</div>
 

@@ -45,13 +45,19 @@ $(function() {
 	function initializeMap() {
 
 		mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpYXNocmFmIiwiYSI6ImNqdXl5MHV5YTAzNXI0NG51OWFuMGp4enQifQ.zpd2gZFwBTRqiapp1yci9g';
-
+		mapboxgl.setRTLTextPlugin(
+			"https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js"
+		  );
 		map = new mapboxgl.Map({
 			container: 'map-view',
-			style: 'mapbox://styles/aliashraf/ck6lw9nr80lvo1ipj8zovttdx',
-			center: [-73.983652, 40.755024], 
+			// style: 'mapbox://styles/aliashraf/ck6lw9nr80lvo1ipj8zovttdx',
+			style: "mapbox://styles/mapbox/streets-zh-v1",
+			center: [116.404269,39.916485], 
 			zoom: 12
 		});
+		map.addControl( new MapboxLanguage({ defaultLanguage: "zh" }) );// 不是zh 
+
+		
 
 		geocoder = new MapboxGeocoder({ accessToken: mapboxgl.accessToken });
 		var control = map.addControl(geocoder);
@@ -144,7 +150,7 @@ $(function() {
 		draw.changeMode('draw_rectangle');
 
 		M.Toast.dismissAll();
-		M.toast({html: 'Click two points on the map to make a rectangle.', displayLength: 7000})
+		M.toast({html: '点击地图上的两个点来做一个矩形.', displayLength: 7000})
 	}
 
 	function initializeGridPreview() {
@@ -336,7 +342,7 @@ $(function() {
 		});
 
 		var totalTiles = getAllGridTiles().length;
-		M.toast({html: 'Total ' + totalTiles.toLocaleString() + ' tiles in the region.', displayLength: 5000})
+		M.toast({html: '提示 该区域内有' + totalTiles.toLocaleString() + ' 个瓦片.', displayLength: 5000})
 
 	}
 
