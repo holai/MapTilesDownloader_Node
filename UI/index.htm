@@ -52,7 +52,7 @@
 
 		<form id='search-form' class='sidebar-section row'>
 			<div class="input-field col s12">
-				<input id="location-box" type="text" value="New York" />
+				<input id="location-box" type="text" value="上海" />
 				<label for="location-box">输入一个位置</label>
 			</div>
 		</form>
@@ -147,9 +147,17 @@
 			</div>
 
 			<div class="input-field col s12">
+				<select id="request-type" type="text">
+					<option value="yes">是</option> 
+					<option value="no">否</option> 
+				</select>
+				<label for="request-type">是否使用gzip压缩请求</label>
+			</div> 
+
+			<!-- <div class="input-field col s12">
 				<input id="parallel-threads-box" type="text" value="4">
 				<label for="parallel-threads-box">下载线程数</label>
-			</div>
+			</div> -->
 		</div>
 
 		<button class='waves-effect waves-light z-depth-0 btn-large cyan darken-2 bottom-button' id='download-button'>下载</button>
