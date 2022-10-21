@@ -1,8 +1,9 @@
-# MapTilesDownloader_Node
+# MapTilesDownloader_Node  地图瓦片下载器
 
 #### 介绍
 MapTilesDownloader的node版本, 页面借用MapTilesDownloader项目的，因为原项目下载文件不能控制gizp所以自己就写了node版本下载作为替代
-可以现在 高德地图瓦片 谷歌地图 Mapbox 等等， 支持自定义地址
+
+**用于地图瓦片下载离线，支持 高德地图瓦片 谷歌地图 Mapbox bingMap OpenStreeMap  自定义瓦片地址 下载**
  
 
 #### 使用教程
@@ -10,6 +11,7 @@ MapTilesDownloader的node版本, 页面借用MapTilesDownloader项目的，因�
 1.  npm install
 2.  node index.js
 3.  打开 http://localhost:9100/index.html
+4.  保存路径默认在项目目录 out/当前时间戳/ 下
 
 #### 后续计划
   1. 导入GeoJSON文件下载
