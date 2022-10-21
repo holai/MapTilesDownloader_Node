@@ -4,20 +4,9 @@ const fs = require("fs");
 const formidable = require("express-formidable");
 const axios = require("axios");
 const fse = require("fs-extra");
-const { log } = require("console");
 const app = express();
 
 app.use(formidable());
-// async function download() {
-//   let { data } = await axios({
-//     url: "http://127.0.0.1:5000/v4/mapbox.mapbox-terrain-v2,mapbox.mapbox-bathymetry-v2,mapbox.mapbox-streets-v8/1/1/0.vector.pbf?sku=101U5LFnnCSNA&access_token=pk.eyJ1IjoiaG91bGFpZGVsdWEiLCJhIjoiY2w4bDlpZngzMGtxcTN1cDRnNG9qcDdyYSJ9.MtgwgbUiI4dtw6WY-sxyOQ",
-//     // headers: {
-//     //   'Content-Type': 'multipart/form-data',
-//     // },
-//     responseType: "arraybuffer",
-//   });
-//   await fs.promises.writeFile(`./0.pbf`, data, "binary");
-// }
 
 app.use((req, res, next) => {
   //设置请求头
@@ -42,18 +31,6 @@ app.use("/start-download", function (req, res) {
   } catch (error) {
     fse.ensureDirSync(pathCreate);
   }
-  // {
-  //   minZoom: '1',
-  //   maxZoom: '2',
-  //   outputDirectory: '{timestamp}',
-  //   outputFile: '{z}/{x}/{y}.png',
-  //   outputType: 'directory',
-  //   outputScale: '1',
-  //   source: 'http://ecn.t0.tiles.virtualearth.net/tiles/a{quad}.jpeg?g=129&mkt=en&stl=H',
-  //   timestamp: '1664360729877',
-  //   bounds: '-73.99017513233417,40.73779215352124,-73.93369853931902,40.76458087245638',
-  //   center: '-73.9619368358266,40.75118651298881,2'
-  // }
   res.json({ code: 200 });
 });
 app.use("/download-tile", async function (req, res) {
@@ -79,15 +56,21 @@ app.use("/download-tile", async function (req, res) {
     .replaceAll("{x}", data.x)
     .replaceAll("{y}", data.y)
     .replaceAll("{quad}", data.quad);
-  let mapRes = await axios({
-    url: url,
-    headers: {
-      "Accept-Encoding": data.requestType == "yes" ? "gzip, deflate, br" : "",
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
-    },
-    responseType: "arraybuffer",
-  });
+  let mapRes = {};
+  try {
+    mapRes = await axios({
+      url: url,
+      headers: {
+        "Accept-Encoding": data.requestType == "yes" ? "gzip, deflate, br" : "",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
+      },
+      responseType: "arraybuffer",
+    });
+  } catch (error) {
+    res.json({ code: 500, message: "下载错误：" + error });
+    return;
+  }
   const filePath = path.join(
     __dirname,
     "/out/" +
@@ -111,13 +94,23 @@ app.use("/download-tile", async function (req, res) {
   // }
 
   // if( fileType == "file" ){
-  await fs.promises.writeFile(filePath, mapRes.data, "binary");
+  try {
+    await fs.promises.writeFile(filePath, mapRes.data, "binary");
+  } catch (error) {
+    res.json({ code: 400, message: "保存失败：" + error });
+    return;
+  }
   // }else{
   // }
   // let  contentType = res.headers['content-type'] || "";
   // let isImage = contentType.includes("image");
-  res.json({ code: 200, message: "成功" });
+  res.json({ code: 200, message: "成功", image: mapRes.data });
 });
+
+app.use("/end-download", function (req, res) {
+  res.json({ code: 200 });
+});
+
 app.listen(9100, () => {
-  console.log(`server is running on port ${9100}`);
+  console.log(`http://localhost:9100/index.html`);
 });

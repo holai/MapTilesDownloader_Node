@@ -10,6 +10,15 @@ $(function () {
   var requests = [];
 
   var sources = {
+    高德地图:
+      "https://webst01.is.autonavi.com/appmaptile?style=7&x={x}&y={y}&z={z}",
+    高德卫星:
+      "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+    高德路网:
+      "http://wprd02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=8",
+
+    "div-1B": "",
+
     "Bing Maps":
       "http://ecn.t0.tiles.virtualearth.net/tiles/r{quad}.jpeg?g=129&mkt=en&stl=H",
     "Bing Maps Satellite":
@@ -17,7 +26,7 @@ $(function () {
     "Bing Maps Hybrid":
       "http://ecn.t0.tiles.virtualearth.net/tiles/h{quad}.jpeg?g=129&mkt=en&stl=H",
 
-    "div-1B": "",
+    "div-2": "",
 
     "Google Maps": "https://mt0.google.com/vt?lyrs=m&x={x}&s=&y={y}&z={z}",
     "Google Maps Satellite":
@@ -27,13 +36,13 @@ $(function () {
     "Google Maps Terrain":
       "https://mt0.google.com/vt?lyrs=p&x={x}&s=&y={y}&z={z}",
 
-    "div-2": "",
+    "div-3": "",
 
     "Open Street Maps": "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
     "Open Cycle Maps": "http://a.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
     "Open PT Transport": "http://openptmap.org/tiles/{z}/{x}/{y}.png",
 
-    "div-3": "",
+    "div-4": "",
 
     "ESRI World Imagery":
       "http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
@@ -41,15 +50,17 @@ $(function () {
     "NASA GIBS":
       "https://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
 
-    "div-4": "",
+    "div-5": "",
 
     "Carto Light":
       "http://cartodb-basemaps-c.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
     "Stamen Toner B&W": "http://a.tile.stamen.com/toner/{z}/{x}/{y}.png",
 
-    "div-5": "",
-    "MapBox矢量 (请替换key并修改输出路径中的后缀名)":
+    "div-6": "",
+    "MapBox矢量(替换key修改输出路径中的后缀名)":
       "https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2,mapbox.mapbox-bathymetry-v2,mapbox.mapbox-streets-v8/{z}/{x}/{y}.vector.pbf?sku=101Asds1IWRgC&access_token=pk.eyJ1IjoiYWxpYXNocmFmIiwiYSI6ImNqdXl5MHV5YTAzNXI0NG51OWFuMGp4enQifQ.zpd2gZFwBTRqiapp1yci9g",
+    "MapBox卫星 ":
+      "https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.webp?sku=101Asds1IWRgC&access_token=pk.eyJ1IjoiYWxpYXNocmFmIiwiYSI6ImNqdXl5MHV5YTAzNXI0NG51OWFuMGp4enQifQ.zpd2gZFwBTRqiapp1yci9g",
   };
 
   function initializeMap() {
@@ -427,7 +438,12 @@ $(function () {
       $(currentImages[i]).remove();
     }
 
-    var image = $("<img/>").attr("src", "data:image/png;base64, " + base64);
+    // var image = $("<img/>").attr("src", "data:image/png;base64, " + base64);
+    // console.log(base64, "----base64---");
+    const arraybuffer = new Int8Array(base64.data);
+    const blob = new Blob([arraybuffer], { type: "image/png" });
+    const url = URL.createObjectURL(blob);
+    var image = $("<img/>").attr("src", url);
 
     var strip = $(".tile-strip");
     strip.prepend(image);
@@ -557,7 +573,7 @@ $(function () {
                 item.x,
                 item.y,
                 item.z,
-                data.code + " Error downloading tile"
+                data.code + " " + (data.message ? data.message : "下载瓦片错误")
               );
             }
           })
