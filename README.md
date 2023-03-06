@@ -6,12 +6,13 @@ MapTilesDownloader的node版本, 页面借用MapTilesDownloader项目的，因�
 **用于地图瓦片下载离线，支持 高德地图瓦片 谷歌地图 Mapbox bingMap OpenStreeMap  自定义瓦片地址 下载**
  
 
-#### 使用教程
+#### 使用教程  (请替换使用自己的Mapbox Token！！！)
 
 1.  npm install
 2.  node index.js
 3.  打开 http://localhost:9100/index.html
-4.  保存路径默认在项目目录 out/当前时间戳/ 下
+4.  请将 /UI/main.js 下的MapBox地图token全部替换成自己的 （防止滥用我将于近期关闭自己的token, Mapbox token为免费注册 请自行注册并替换  ！！！）
+5.  保存路径默认在项目目录 out/当前时间戳/ 下
 
 #### 后续计划
   1. 导入GeoJSON文件下载
